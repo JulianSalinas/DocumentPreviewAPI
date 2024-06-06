@@ -29,6 +29,9 @@ namespace DocumentPreviewAPI.Controllers
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
             //var user = await _graphServiceClient.Me.Request().GetAsync();
+
+            _logger.LogCritical("This is a critical test for application insights");
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

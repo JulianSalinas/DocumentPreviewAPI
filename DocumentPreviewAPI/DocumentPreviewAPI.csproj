@@ -5,9 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-DocumentPreviewAPI-64ed1ae6-2fc9-4364-b620-2c035e797685</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/ba794967-db1d-4783-a225-42577debd065/resourceGroups/DocumentPreviewRG/providers/microsoft.insights/components/DocumentPreviewAPI</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.3" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
