@@ -39,11 +39,9 @@ namespace DocumentPreviewAPI.Controllers
 
             var previewFileName = $"{imageSize.GetPrefix()}/{Path.GetFileNameWithoutExtension(decodedFileName)}-{imageSize.GetWidth()}x{imageSize.GetHeight()}{Path.GetExtension(decodedFileName)}";
 
-            var options = new DefaultAzureCredentialOptions
-            {
-            };
-
-            var credential = new DefaultAzureCredential();
+            var credential = new ChainedTokenCredential(
+                new ManagedIdentityCredential(Configuration["ManagedIdentityClientId"]),
+                new VisualStudioCodeCredential());
 
             var uri = new Uri("https://jslearning.blob.core.windows.net/");
 
