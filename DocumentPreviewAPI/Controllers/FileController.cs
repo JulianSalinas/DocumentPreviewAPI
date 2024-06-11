@@ -26,7 +26,7 @@ namespace DocumentPreviewAPI.Controllers
         private readonly ILogger<FileControllerController> _logger;
 
         public FileControllerController(
-            ILogger<FileControllerController> logger, 
+            ILogger<FileControllerController> logger,
             IConfiguration configuration,
             IOptionsSnapshot<DynamicSettings> settingsSnapshot)//, GraphServiceClient graphServiceClient)
         {
@@ -34,6 +34,12 @@ namespace DocumentPreviewAPI.Controllers
             Configuration = configuration;
             Settings = settingsSnapshot.Value;
             //_graphServiceClient = graphServiceClient;
+        }
+
+        [HttpGet("{fileName}/{imageSize}")]
+        public async Task<IActionResult> GetFileInSize(string fileName, ImageSize imageSize)
+        {
+            return Ok(Settings.TestMessage + fileName + imageSize.GetPrefix());
         }
 
         //[Authorize]
