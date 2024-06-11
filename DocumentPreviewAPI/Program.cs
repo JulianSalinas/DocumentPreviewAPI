@@ -15,7 +15,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     var managedIdentityId = builder.Configuration["ManagedIdentityClientId"];
 
     var credential = new ChainedTokenCredential(
-        //new ManagedIdentityCredential(managedIdentityId),
+        new ManagedIdentityCredential(managedIdentityId),
         new VisualStudioCredential());
 
     options.Connect(connectionString, credential)
