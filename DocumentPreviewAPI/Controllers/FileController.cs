@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using Microsoft.Graph;
-using DocumentPreviewAPI.Utilities;
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using DocumentPreviewAPI.Utilities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System.Web;
 
 namespace DocumentPreviewAPI.Controllers
@@ -12,10 +11,11 @@ namespace DocumentPreviewAPI.Controllers
     //[Authorize]
     [ApiController]
     [Route("[controller]")]
-    //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class FileControllerController : ControllerBase
     {
         private IConfiguration Configuration;
+
+        private readonly DynamicSettings Settings;
 
         //private readonly GraphServiceClient _graphServiceClient;
         private static readonly string[] Summaries = new[]
@@ -25,13 +25,18 @@ namespace DocumentPreviewAPI.Controllers
 
         private readonly ILogger<FileControllerController> _logger;
 
-        public FileControllerController(ILogger<FileControllerController> logger, IConfiguration configuration)//, GraphServiceClient graphServiceClient)
+        public FileControllerController(
+            ILogger<FileControllerController> logger, 
+            IConfiguration configuration,
+            IOptionsSnapshot<DynamicSettings> settingsSnapshot)//, GraphServiceClient graphServiceClient)
         {
             _logger = logger;
             Configuration = configuration;
+            Settings = settingsSnapshot.Value;
             //_graphServiceClient = graphServiceClient;
         }
 
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> Get(string fileName, ImageSize imageSize)
         {
@@ -42,6 +47,21 @@ namespace DocumentPreviewAPI.Controllers
             var credential = new ChainedTokenCredential(
                 new ManagedIdentityCredential(Configuration["ManagedIdentityClientId"]),
                 new VisualStudioCodeCredential());
+
+            //StringValues authorizationToken;
+
+            //HttpContext.Request.Headers.TryGetValue("Authorization", out authorizationToken);
+
+            //var token = authorizationToken.ToString().Replace("Bearer ", "");
+
+            //var secret = Configuration["AzureAD:ClientSecret"];
+
+            //var credential = new ChainedTokenCredential(
+            //    new OnBehalfOfCredential(
+            //        Configuration["AzureAD:TenantId"],
+            //        Configuration["AzureAD:ClientId"],
+            //        secret,
+            //        token));
 
             var uri = new Uri("https://jslearning.blob.core.windows.net/");
 
@@ -69,6 +89,12 @@ namespace DocumentPreviewAPI.Controllers
         public IActionResult GetBlobStorageEndpoint()
         {
             return Ok(Configuration["BlobStorageURL"]);
+        }
+
+        [HttpGet("Test")]
+        public IActionResult TestConfiguration()
+        {
+            return Ok(Settings.TestMessage);
         }
     }
 }
