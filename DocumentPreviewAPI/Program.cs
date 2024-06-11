@@ -7,7 +7,7 @@ using Microsoft.Identity.Web;
 var builder = WebApplication.CreateBuilder(args);
 
 // Retrieve the connection string
-var connectionString = new Uri(builder.Configuration.GetConnectionString("AppConfig")!);
+var connectionString = new Uri(builder.Configuration.GetConnectionString("AppConfigURL")!);
 
 // Load configuration from Azure App Configuration
 builder.Configuration.AddAzureAppConfiguration(options =>
