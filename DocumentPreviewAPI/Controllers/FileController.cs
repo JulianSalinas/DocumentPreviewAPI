@@ -39,7 +39,9 @@ namespace DocumentPreviewAPI.Controllers
         [HttpGet("{fileName}/{imageSize}")]
         public async Task<IActionResult> GetFileInSize(string fileName, ImageSize imageSize)
         {
-            return Ok(Settings.TestMessage + fileName + imageSize.GetPrefix());
+            var message = Settings.TestMessage + fileName + imageSize.GetPrefix();
+
+            return Ok(new { message });
         }
 
         //[Authorize]
